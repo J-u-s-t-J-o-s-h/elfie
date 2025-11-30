@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "name": "KitchenCam",
+        "status": "RECORDED",
+        "timestamp": "2025-12-24 23:42:15",
+        "motionDetected": false
+    },
+    {
+        "id": 2,
+        "name": "LivingRoomCam",
+        "status": "RECORDED",
+        "timestamp": "2025-12-24 23:42:15",
+        "motionDetected": true
+    },
+    {
+        "id": 3,
+        "name": "HallwayCam",
+        "status": "OFFLINE",
+        "timestamp": "2025-12-24 23:42:15",
+        "motionDetected": false
+    },
+    {
+        "id": 4,
+        "name": "ElfCam-Live",
+        "status": "LIVE",
+        "timestamp": "2025-12-24 23:42:15",
+        "motionDetected": true
+    }
+]

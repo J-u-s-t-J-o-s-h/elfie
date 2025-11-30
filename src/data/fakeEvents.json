@@ -1,0 +1,29 @@
+[
+    {
+        "id": "evt-001",
+        "date": "2025-12-23",
+        "time": "03:15 AM",
+        "title": "Cookie Consumption",
+        "description": "Subject identified consuming cookies near fireplace.",
+        "thumbnail": "/placeholder-event-1.jpg",
+        "duration": "00:45"
+    },
+    {
+        "id": "evt-002",
+        "date": "2025-12-22",
+        "time": "02:45 AM",
+        "title": "Tree Ornament Displacement",
+        "description": "Unexplained movement of lower tree branches.",
+        "thumbnail": "/placeholder-event-2.jpg",
+        "duration": "01:20"
+    },
+    {
+        "id": "evt-003",
+        "date": "2025-12-21",
+        "time": "04:00 AM",
+        "title": "Reindeer Sighting",
+        "description": "Possible hoof prints detected on roof sensors.",
+        "thumbnail": "/placeholder-event-3.jpg",
+        "duration": "00:10"
+    }
+]

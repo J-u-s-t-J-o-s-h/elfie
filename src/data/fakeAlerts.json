@@ -1,0 +1,26 @@
+[
+    {
+        "id": "1",
+        "type": "critical",
+        "message": "Motion detected in Living Room",
+        "time": "23:40"
+    },
+    {
+        "id": "2",
+        "type": "warning",
+        "message": "Kitchen Camera offline",
+        "time": "23:15"
+    },
+    {
+        "id": "3",
+        "type": "info",
+        "message": "System armed",
+        "time": "22:00"
+    },
+    {
+        "id": "4",
+        "type": "info",
+        "message": "Elf activity probability: 85%",
+        "time": "21:30"
+    }
+]
