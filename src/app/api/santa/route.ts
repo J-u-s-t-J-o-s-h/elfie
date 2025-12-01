@@ -59,7 +59,7 @@ export async function POST(req: Request) {
 
         // 3. REAL MODE: ElevenLabs for Text-to-Speech
         const ttsResponse = await fetch(
-            `https://api.elevenlabs.io/v1/text-to-speech/${elevenLabsVoiceId}`,
+            `https://api.elevenlabs.io/v1/text-to-speech/${elevenLabsVoiceId}?optimize_streaming_latency=3`,
             {
                 method: "POST",
                 headers: {
