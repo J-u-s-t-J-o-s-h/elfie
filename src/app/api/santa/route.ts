@@ -32,7 +32,8 @@ export async function POST(req: Request) {
         // Model: LiquidAI/LFM2-Audio-1.5B
         // We'll try the standard HF Inference API URL
         const MODEL_ID = "LiquidAI/LFM2-Audio-1.5B";
-        const API_URL = `https://api-inference.huggingface.co/models/${MODEL_ID}`;
+        // Updated to new router endpoint (api-inference.huggingface.co is deprecated)
+        const API_URL = `https://router.huggingface.co/hf-inference/models/${MODEL_ID}`;
 
         console.log(`Sending request to ${MODEL_ID}...`);
 
