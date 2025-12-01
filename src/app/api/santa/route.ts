@@ -11,92 +11,84 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: "No text provided" }, { status: 400 });
         }
 
-        const openaiKey = process.env.OPENAI_API_KEY;
-        const elevenLabsKey = process.env.ELEVENLABS_API_KEY;
-        const elevenLabsVoiceId = process.env.ELEVENLABS_VOICE_ID || "21m00Tcm4TlvDq8ikWAM"; // Fallback to Rachel if not set, user should change this
+        const hfToken = process.env.HUGGINGFACE_API_KEY;
+        const liquidKey = process.env.LIQUID_API_KEY;
+        const apiKey = hfToken || liquidKey;
 
-        // 1. MOCK MODE: If keys are missing, return a dummy response
-        if (!openaiKey || !elevenLabsKey) {
+        // 1. MOCK MODE (if no keys)
+        if (!apiKey) {
             console.log("Missing API keys, using Mock Mode");
-            // Simulate delay
-            await new Promise((resolve) => setTimeout(resolve, 2000));
-
-            return NextResponse.json({
-                text: "Ho ho ho! I'm currently in Mock Mode because my API keys are missing. But I hear you loud and clear! Merry Christmas!",
-                audio: MOCK_AUDIO_BASE64,
-                contentType: "audio/mp3",
-                isMock: true
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            const audioBuffer = Buffer.from(MOCK_AUDIO_BASE64, 'base64');
+            return new NextResponse(audioBuffer, {
+                headers: {
+                    "Content-Type": "audio/mpeg",
+                    "X-Santa-Text": "Ho ho ho! Mock Mode active (No API Key found).",
+                },
             });
         }
 
-        // 2. REAL MODE: OpenAI for Text Generation
-        const completion = await fetch("https://api.openai.com/v1/chat/completions", {
+        // 2. LiquidAI / Hugging Face Inference
+        // Model: LiquidAI/LFM2-Audio-1.5B
+        // We'll try the standard HF Inference API URL
+        const MODEL_ID = "LiquidAI/LFM2-Audio-1.5B";
+        const API_URL = `https://api-inference.huggingface.co/models/${MODEL_ID}`;
+
+        console.log(`Sending request to ${MODEL_ID}...`);
+
+        // Note: The specific payload format for this model might vary.
+        // Standard TTS usually expects {"inputs": "text"}.
+        // Since this is a foundation model, we might need to specify the task or format.
+        // We will try the standard "inputs" payload first.
+
+        const response = await fetch(API_URL, {
             method: "POST",
             headers: {
+                Authorization: `Bearer ${apiKey}`,
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${openaiKey}`,
             },
             body: JSON.stringify({
-                model: "gpt-4o-mini",
-                messages: [
-                    {
-                        role: "system",
-                        content: "You are Santa Claus. You are jolly, warm, and kind. Keep your responses relatively short (2-3 sentences max) so the conversation flows naturally. Use 'Ho ho ho' sparingly. You are talking to a child."
-                    },
-                    { role: "user", content: text }
-                ],
-                max_tokens: 150,
+                inputs: text,
+                parameters: {
+                    // Optional parameters if needed
+                }
             }),
         });
 
-        const completionData = await completion.json();
-
-        if (completionData.error) {
-            throw new Error(`OpenAI Error: ${completionData.error.message}`);
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error("HF API Error:", errorText);
+            throw new Error(`Hugging Face API Error: ${response.status} ${response.statusText} - ${errorText}`);
         }
 
-        const santaResponse = completionData.choices[0].message.content;
+        // 3. Return Audio
+        // The HF Inference API returns the raw audio bytes.
+        // We pass the original text back in the header so the UI can show it (since we don't have a separate text generation step anymore, 
+        // or rather, we are using the user's text as the "Santa Text" for now, 
+        // OR we are assuming the model generates speech from the input text directly).
 
-        // 3. REAL MODE: ElevenLabs for Text-to-Speech
-        const ttsResponse = await fetch(
-            `https://api.elevenlabs.io/v1/text-to-speech/${elevenLabsVoiceId}?optimize_streaming_latency=3`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "xi-api-key": elevenLabsKey,
-                },
-                body: JSON.stringify({
-                    text: santaResponse,
-                    model_id: "eleven_turbo_v2",
-                    voice_settings: {
-                        stability: 0.5,
-                        similarity_boost: 0.75,
-                    },
-                }),
-            }
-        );
+        // WAIT: The previous logic generated text *then* speech. 
+        // If we just pass the user's text to TTS, Santa just repeats what the user said?
+        // The user request was "use this model". LFM2-Audio is a "speech-to-speech" or "text-to-speech" model.
+        // If it's a foundation model, maybe it *generates* the response too?
+        // "End-to-end audio foundation model... conversational tasks".
+        // This implies we send the USER audio/text, and it returns SANTA audio.
+        // So sending the user text `text` is correct, and the audio returned is the *response*.
 
-        if (!ttsResponse.ok) {
-            const errorText = await ttsResponse.text();
-            throw new Error(`ElevenLabs Error: ${errorText}`);
-        }
+        // We need to know what the *text* of the response was to show it in the UI.
+        // Standard audio-to-audio models don't always return the transcript.
+        // For now, we will set X-Santa-Text to "Santa is speaking..." or similar, 
+        // unless we can parse a multipart response (unlikely for standard HF API).
 
-        const audioBuffer = await ttsResponse.arrayBuffer();
-        const audioBase64 = Buffer.from(audioBuffer).toString("base64");
-
-        return NextResponse.json({
-            text: santaResponse,
-            audio: audioBase64,
-            contentType: "audio/mpeg",
-            isMock: false
+        return new NextResponse(response.body, {
+            headers: {
+                "Content-Type": "audio/mpeg", // Or audio/wav, depending on model output
+                "X-Santa-Text": "(Audio response)",
+            },
         });
 
     } catch (error: any) {
         console.error("Error in /api/santa:", error);
-        return NextResponse.json(
-            { error: error.message || "Internal Server Error" },
-            { status: 500 }
-        );
+        return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

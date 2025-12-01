@@ -122,13 +122,23 @@ export function SantaCallModal({ isOpen, onClose }: SantaCallModalProps) {
             clearTimeout(timeoutId);
 
             addLog(`API Response status: ${response.status}`);
-            const data = await response.json();
 
-            if (data.error) throw new Error(data.error);
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.error || "API Error");
+            }
 
-            setSantaText(data.text);
-            addLog("Playing audio response...");
-            playAudio(data.audio, data.contentType);
+            // Get text from header
+            const santaResponseText = response.headers.get("X-Santa-Text") || "...";
+            setSantaText(santaResponseText);
+            addLog(`Santa says: ${santaResponseText}`);
+
+            // Get audio as blob
+            const audioBlob = await response.blob();
+            const audioUrl = URL.createObjectURL(audioBlob);
+
+            addLog("Playing audio stream...");
+            playAudio(audioUrl);
 
         } catch (err: any) {
             addLog(`API Error: ${err.message}`);
@@ -138,7 +148,7 @@ export function SantaCallModal({ isOpen, onClose }: SantaCallModalProps) {
         }
     };
 
-    const playAudio = (base64Audio: string, contentType: string = "audio/mpeg") => {
+    const playAudio = (audioUrl: string) => {
         setStatus("SPEAKING");
 
         if (!audioRef.current) {
@@ -146,11 +156,12 @@ export function SantaCallModal({ isOpen, onClose }: SantaCallModalProps) {
         }
 
         const audio = audioRef.current;
-        audio.src = `data:${contentType};base64,${base64Audio}`;
+        audio.src = audioUrl;
 
         audio.onended = () => {
             addLog("Audio playback ended");
             setStatus("IDLE");
+            URL.revokeObjectURL(audioUrl); // Cleanup
         };
 
         audio.play()
