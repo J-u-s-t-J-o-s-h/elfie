@@ -20,9 +20,9 @@ export function TopNav() {
 
     return (
         <>
-            <header className="fixed top-0 left-0 right-0 z-30 h-16 bg-elf-dark/80 backdrop-blur-md border-b border-gray-800 flex items-center justify-between px-4 md:pl-72 md:pr-8">
+            <header className="fixed top-0 left-0 right-0 z-30 h-16 bg-elf-dark/80 backdrop-blur-md border-b border-white/10 flex items-center justify-between px-4 md:pl-72 md:pr-8 shadow-lg shadow-black/20">
                 <div className="flex items-center gap-2 md:hidden pl-12">
-                    <span className="text-xl font-bold text-elf-neon-blue tracking-tighter">ELFCAM</span>
+                    <span className="text-2xl font-bold text-elf-neon-green tracking-tighter font-[family-name:var(--font-festive)]">Elfie</span>
                 </div>
 
                 <div className="flex-1 flex justify-end items-center gap-4">

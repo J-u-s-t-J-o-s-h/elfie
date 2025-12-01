@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Mountains_of_Christmas } from "next/font/google";
 import "./globals.css";
 import { StorageProvider } from "@/context/StorageContext";
+import { Snow } from "@/components/ui/Snow";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,8 +14,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const festiveFont = Mountains_of_Christmas({
+  variable: "--font-festive",
+  weight: ["400", "700"],
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
-  title: "ElfCam Security",
+  title: "Elfie",
   description: "North Pole Surveillance System",
 };
 
@@ -26,8 +33,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${festiveFont.variable} antialiased`}
       >
+        <Snow />
         <StorageProvider>
           {children}
         </StorageProvider>

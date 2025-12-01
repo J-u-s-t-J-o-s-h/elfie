@@ -37,15 +37,16 @@ export function SideNav() {
             {/* Sidebar */}
             <aside
                 className={cn(
-                    "fixed top-0 left-0 z-40 h-full w-64 bg-elf-dark/95 border-r border-gray-800 transform transition-transform duration-300 ease-in-out pt-20 md:pt-4 md:translate-x-0",
+                    "fixed top-0 left-0 z-40 h-full w-64 bg-elf-dark/95 border-r border-white/10 transform transition-transform duration-300 ease-in-out pt-20 md:pt-4 md:translate-x-0 shadow-2xl shadow-black/50",
                     isOpen ? "translate-x-0" : "-translate-x-full"
                 )}
             >
                 <div className="flex flex-col h-full px-4">
-                    <div className="mb-8 px-2 hidden md:block">
-                        <h1 className="text-2xl font-bold text-elf-neon-blue tracking-tighter">
-                            ELFCAM<span className="text-white text-sm ml-1 font-normal">SECURE</span>
+                    <div className="mb-8 px-2 hidden md:block text-center">
+                        <h1 className="text-4xl font-bold text-elf-neon-green tracking-tighter font-[family-name:var(--font-festive)] drop-shadow-[0_0_10px_rgba(74,222,128,0.5)]">
+                            Elfie
                         </h1>
+                        <p className="text-xs text-elf-gold uppercase tracking-widest mt-1 font-bold">North Pole OS</p>
                     </div>
 
                     <nav className="flex-1 space-y-2">

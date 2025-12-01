@@ -42,7 +42,7 @@ export async function POST(req: Request) {
                     Authorization: `Bearer ${groqKey}`,
                 },
                 body: JSON.stringify({
-                    model: "llama3-8b-8192", // Very fast model
+                    model: "llama-3.1-8b-instant", // Updated to supported model
                     messages: [
                         {
                             role: "system",
