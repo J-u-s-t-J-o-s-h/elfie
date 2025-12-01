@@ -28,7 +28,12 @@ export function TopNav() {
                 <div className="flex-1 flex justify-end items-center gap-4">
                     {/* Call Santa Button */}
                     <button
-                        onClick={() => setIsCallModalOpen(true)}
+                        onClick={() => {
+                            // Wake up audio engine immediately on user interaction
+                            const audio = new Audio("data:audio/wav;base64,UklGRigAAABXQVZFfm00IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA");
+                            audio.play().catch(() => { });
+                            setIsCallModalOpen(true);
+                        }}
                         className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-full transition-colors shadow-lg shadow-red-900/20"
                     >
                         <Phone size={16} />
