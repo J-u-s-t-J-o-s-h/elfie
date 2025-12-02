@@ -1,3 +1,5 @@
+"use client";
+
 import { SantaCallModal } from "@/components/santa/SantaCallModal";
 import { useStorage } from "@/context/StorageContext";
 import { Bell, Phone } from "lucide-react";
@@ -37,7 +39,7 @@ export function TopNav() {
                         className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-full transition-colors shadow-lg shadow-red-900/20"
                     >
                         <Phone size={16} />
-                        <span className="hidden sm:inline font-bold text-sm">Call Santa</span>
+                        <span className="font-bold text-sm">Call Santa</span>
                     </button>
 
                     <div className={`hidden md:flex items-center gap-2 px-3 py-1 border rounded-full ${colorClass}`}>

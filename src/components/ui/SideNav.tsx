@@ -1,13 +1,14 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Home, Calendar, ShieldAlert, LogOut, Menu, X } from "lucide-react";
+import { Home, Calendar, ShieldAlert, LogOut, Menu, X, Globe } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const NAV_ITEMS = [
     { label: "Dashboard", href: "/dashboard", icon: Home },
+    { label: "Tracker", href: "/tracker", icon: Globe },
     { label: "Events", href: "/events", icon: Calendar },
     { label: "Admin", href: "/admin", icon: ShieldAlert },
 ];

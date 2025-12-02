@@ -182,7 +182,7 @@ export function SantaCallModal({ isOpen, onClose }: SantaCallModalProps) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4 animate-in fade-in duration-300">
-            <div className="relative w-full max-w-md bg-elf-panel border border-red-500/30 rounded-3xl overflow-hidden shadow-2xl flex flex-col items-center p-8 gap-8">
+            <div className="relative w-full max-w-md bg-elf-panel border border-red-500/30 rounded-3xl overflow-hidden shadow-2xl flex flex-col items-center p-4 md:p-8 gap-4 md:gap-8">
 
                 {/* Close Button */}
                 <button onClick={handleClose} className="absolute top-4 right-4 text-gray-400 hover:text-white">
@@ -198,7 +198,7 @@ export function SantaCallModal({ isOpen, onClose }: SantaCallModalProps) {
                 </div>
 
                 {/* Visualizer / Avatar */}
-                <div className="relative w-48 h-48 flex items-center justify-center">
+                <div className="relative w-32 h-32 md:w-48 md:h-48 flex items-center justify-center">
                     {/* Rings */}
                     <div className={cn(
                         "absolute inset-0 border-2 border-red-500/20 rounded-full transition-all duration-1000",
@@ -211,7 +211,7 @@ export function SantaCallModal({ isOpen, onClose }: SantaCallModalProps) {
 
                     {/* Center Icon */}
                     <div className={cn(
-                        "w-32 h-32 bg-gradient-to-br from-red-500 to-red-700 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(239,68,68,0.5)] transition-transform duration-300",
+                        "w-20 h-20 md:w-32 md:h-32 bg-gradient-to-br from-red-500 to-red-700 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(239,68,68,0.5)] transition-transform duration-300",
                         status === "SPEAKING" ? "scale-110" : "scale-100"
                     )}>
                         <Phone size={48} className="text-white" />
